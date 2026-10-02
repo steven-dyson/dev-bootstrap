@@ -39,6 +39,9 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.filetype.add({
+  extension = {
+    soql = "soql",
+  },
   pattern = {
     [".env*"] = "env",
   },

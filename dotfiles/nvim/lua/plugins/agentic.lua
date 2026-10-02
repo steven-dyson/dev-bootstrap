@@ -1,11 +1,45 @@
+-- Detect environment: work vs home
+local function is_work_env()
+  -- Check for work-specific environment variable or hostname pattern
+  -- local work_indicator = os.getenv("WORK_ENV") or os.getenv("SNOWFLAKE_HOME")
+  local work_indicator = true
+  print(work_indicator)
+  if work_indicator then
+    return true
+  end
+
+  -- Check hostname for work patterns (customize as needed)
+  local handle = io.popen("hostname")
+  if handle then
+    local hostname = handle:read("*a"):lower()
+    handle:close()
+    -- Adjust these patterns to match your work machine hostnames
+    if hostname:match("work") or hostname:match("corp") or hostname:match("enterprise") then
+      return true
+    end
+  end
+
+  return false
+end
+
+local default_provider = is_work_env() and "claude-agent-acp" or "codex-acp"
+
+--print(default_provider)
+
 return {
   "carlos-algms/agentic.nvim",
 
   opts = {
-    -- Any ACP-compatible provider works. Built-in: "claude-agent-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "copilot-acp" | "auggie-acp" | "mistral-vibe-acp" | "cline-acp" | "goose-acp"
-    provider = "codex-acp", -- setting the name here is all you need to get started
+    provider = default_provider,
+
     acp_providers = {
+      ["claude-agent-acp"] = {
+        name = "Claude Agent",
+        command = "claude-agent-acp",
+        args = {},
+      },
       ["codex-acp"] = {
+        name = "Codex",
         command = "codex-acp",
         args = {
           "-c",
@@ -26,9 +60,10 @@ return {
           'web_search="live"',
         },
       },
-      ["opencode-acp"] = {
-        command = "opencode",
-        args = { "acp" },
+      ["snowflake-cortex-acp"] = {
+        name = "Snowflake Cortex",
+        command = "cortex",
+        args = { "acp", "serve", "--connection", "cortex-pat" },
       },
     },
     keymaps = {

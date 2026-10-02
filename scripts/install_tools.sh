@@ -89,7 +89,36 @@ install_docker() {
 }
 handle_install "Docker" install_docker docker
 
+# pgAdmin 4 (Web Mode)
+install_pgadmin() {
+	if dpkg -l | grep -q pgadmin4-web && [ -d /usr/pgadmin4 ]; then
+		echo "pgAdmin 4 is already installed."
+	else
+		# Add pgAdmin repository GPG key
+		if [ ! -f /usr/share/keyrings/packages-pgadmin-org.gpg ]; then
+			curl -fsS https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo gpg --dearmor -o /usr/share/keyrings/packages-pgadmin-org.gpg > >(write_to_log) 2>&1
+		fi
+
+		# Add repository if not already added
+		if [ ! -f /etc/apt/sources.list.d/pgadmin4.list ]; then
+			sudo sh -c 'echo "deb [signed-by=/usr/share/keyrings/packages-pgadmin-org.gpg] https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list' > >(write_to_log) 2>&1
+		fi
+
+		# Install pgAdmin 4 web
+		$PKG_MGR update > >(write_to_log) 2>&1
+		$PKG_MGR install pgadmin4-web -y > >(write_to_log) 2>&1
+
+		# Configure web server (non-interactive)
+		echo "Setting up pgAdmin web server..."
+		sudo /usr/pgadmin4/bin/setup-web.sh --yes > >(write_to_log) 2>&1 || true
+
+		echo ""
+		echo "🌐 pgAdmin 4 available at: http://localhost/pgadmin4"
+		echo "📝 Start Apache with: sudo service apache2 start"
+	fi
+}
+handle_install "pgAdmin 4" install_pgadmin "pgadmin4"
+
 # TODO: Lazygit
 # TODO: grep / fzf
 # TODO: Lua / hererocks / luarocks
-# TODO: Postgres

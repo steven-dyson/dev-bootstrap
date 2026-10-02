@@ -29,8 +29,13 @@ return {
         end,
       },
       ["sqlfluff"] = {
-        args = { "format", "--dialect", "postgres", "-" },
-        require_cwd = false,
+        args = { "fix", "--stdin-filename", "$FILENAME", "-" },
+        require_cwd = true,
+      },
+      ["sqlfluff_soql"] = {
+        command = "sqlfluff",
+        args = { "fix", "--exclude-rules", "CP01,CP02,CP03,CP04,CP05", "--dialect", "soql", "--stdin-filename", "$FILENAME", "-" },
+        stdin = true,
       },
     })
 
@@ -57,6 +62,7 @@ return {
       sh = { "shfmt" },
       bash = { "shfmt" },
       sql = { "sqlfluff" },
+      soql = { "sqlfluff_soql" },
       templ = { "templ_tool" },
     })
   end,

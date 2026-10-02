@@ -11,6 +11,7 @@ return {
       "css",
       "javascript",
       "typescript",
+      "sql",
     }
 
     for _, parser in ipairs(parsers) do
@@ -20,5 +21,8 @@ return {
     end
 
     opts.auto_install = true
+
+    -- Use SQL parser for SOQL files
+    vim.treesitter.language.register("sql", "soql")
   end,
 }
