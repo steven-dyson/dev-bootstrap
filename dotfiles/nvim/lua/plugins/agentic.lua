@@ -1,10 +1,14 @@
 -- Detect environment: work vs home
 local function is_work_env()
-  -- Check for work-specific environment variable or hostname pattern
-  -- local work_indicator = os.getenv("WORK_ENV") or os.getenv("SNOWFLAKE_HOME")
-  local work_indicator = true
-  print(work_indicator)
-  if work_indicator then
+  -- An explicit WORK_ENV takes precedence over automatic detection.
+  local work_env = os.getenv("WORK_ENV")
+  if work_env and work_env ~= "" then
+    work_env = work_env:lower()
+    return work_env ~= "0" and work_env ~= "false" and work_env ~= "no" and work_env ~= "off"
+  end
+
+  local snowflake_home = os.getenv("SNOWFLAKE_HOME")
+  if snowflake_home and snowflake_home ~= "" then
     return true
   end
 
@@ -23,8 +27,6 @@ local function is_work_env()
 end
 
 local default_provider = is_work_env() and "claude-agent-acp" or "codex-acp"
-
---print(default_provider)
 
 return {
   "carlos-algms/agentic.nvim",

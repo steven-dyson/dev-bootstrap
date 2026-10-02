@@ -23,7 +23,7 @@ return {
       -- LSP Servers
       "lua-language-server",
       "gopls",
-      "bashls",
+      "bash-language-server",
       "tailwindcss-language-server",
       "svelte-language-server",
       "astro-language-server",
