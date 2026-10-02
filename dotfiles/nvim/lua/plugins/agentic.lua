@@ -31,10 +31,28 @@ return {
         args = { "acp" },
       },
     },
+    keymaps = {
+      widget = {
+        change_mode = {
+          {
+            "<leader>am",
+            mode = { "i", "n", "v" },
+          },
+        },
+        switch_model = "<leader>aM",
+        change_thought_level = "<leader>at",
+        open_options = "<leader>ao",
+        switch_provider = "<leader>ap",
+        select_session = "<leader>as",
+        next_session = "<leader>a]",
+        prev_session = "<leader>a[",
+        destroy_session = "<leader>aD",
+      },
+    },
   },
 
-  -- these are just suggested keymaps; customize as desired
   keys = {
+    { "<leader>a", group = "Agentic" },
     {
       "<leader>aa",
       function()
@@ -44,12 +62,20 @@ return {
       desc = "Toggle Agentic Chat",
     },
     {
+      "<leader>aq",
+      function()
+        require("agentic").close()
+      end,
+      mode = { "n", "v" },
+      desc = "Close Agentic Chat",
+    },
+    {
       "<leader>ac",
       function()
         require("agentic").add_selection_or_file_to_context()
       end,
       mode = { "n", "v" },
-      desc = "Add file or selection to Agentic to Context",
+      desc = "Add file or selection to Agentic context",
     },
     {
       "<leader>ap",
@@ -57,7 +83,15 @@ return {
         require("agentic").switch_provider()
       end,
       mode = { "n", "v" },
-      desc = "Switch to a different provider",
+      desc = "Switch Agentic provider",
+    },
+    {
+      "<leader>aP",
+      function()
+        require("agentic").new_session_with_provider()
+      end,
+      mode = { "n", "v" },
+      desc = "New Agentic session with provider",
     },
 
     {
@@ -69,12 +103,52 @@ return {
       desc = "New Agentic Session",
     },
     {
+      "<leader>as",
+      function()
+        require("agentic").select_session()
+      end,
+      mode = { "n", "v" },
+      desc = "Select Agentic session",
+    },
+    {
+      "<leader>a]",
+      function()
+        require("agentic").next_session()
+      end,
+      mode = { "n", "v" },
+      desc = "Next Agentic session",
+    },
+    {
+      "<leader>a[",
+      function()
+        require("agentic").prev_session()
+      end,
+      mode = { "n", "v" },
+      desc = "Previous Agentic session",
+    },
+    {
       "<leader>ar", -- ai Restore
       function()
         require("agentic").restore_session()
       end,
       desc = "Agentic Restore session",
       silent = true,
+      mode = { "n", "v" },
+    },
+    {
+      "<leader>al",
+      function()
+        require("agentic").rotate_layout()
+      end,
+      desc = "Rotate Agentic layout",
+      mode = { "n", "v" },
+    },
+    {
+      "<leader>ax",
+      function()
+        require("agentic").stop_generation()
+      end,
+      desc = "Stop Agentic generation",
       mode = { "n", "v" },
     },
     {
