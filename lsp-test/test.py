@@ -1,5 +1,3 @@
-from typing import List
-
-
 def main() -> None:
-    print("hello")
+    output: str = "Hello"
+    print(output)
