@@ -30,20 +30,5 @@ return {
         },
       },
     })
-
-    opts.servers.postgres_language_server = {
-      cmd = { "postgres-language-server", "lsp-proxy" },
-      filetypes = { "sql", "pgsql", "plpgsql" },
-      root_markers = {
-        ".git",
-        "docker-compose.yml",
-        "docker-compose.yaml",
-        "Makefile",
-        ".sqlfluff",
-        "pyproject.toml",
-      },
-      single_file_support = true,
-      settings = {},
-    }
   end,
 }

@@ -4,14 +4,27 @@ return {
     opts.ensure_installed = opts.ensure_installed or {}
 
     local parsers = {
-      "templ",
-      "http",
-      "svelte",
+      -- Web
       "html",
       "css",
       "javascript",
       "typescript",
+      "svelte",
+      -- Backend
+      "go",
+      "python",
+      "lua",
+      "bash",
       "sql",
+      "templ",
+      -- Config/Data
+      "json",
+      "yaml",
+      "toml",
+      "markdown",
+      "dockerfile",
+      -- Other
+      "http",
     }
 
     for _, parser in ipairs(parsers) do
